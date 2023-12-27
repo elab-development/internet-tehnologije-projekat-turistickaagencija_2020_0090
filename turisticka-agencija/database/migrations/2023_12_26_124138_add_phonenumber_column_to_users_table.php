@@ -11,9 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('arrangements', function (Blueprint $table){
-            $table->renameColumn('start-date','start_date');
-            $table->renameColumn('end-date','end_date');
+        Schema::table('users', function (Blueprint $table) {
+            $table->string('phone_number');
         });
     }
 
@@ -22,9 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('arrangements', function (Blueprint $table){
-            $table->renameColumn('start_date','start-date');
-            $table->renameColumn('end_date','end-date');
+        Schema::table('users', function (Blueprint $table) {
+            $tabel->dropColumn('phone_number');
         });
     }
 };
