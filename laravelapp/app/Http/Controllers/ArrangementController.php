@@ -71,32 +71,7 @@ class ArrangementController extends Controller
         return response()->json($arrangement);
     }
 
-    public function mine(Request $request)
-    {
-        $user = $request->user();
-        if (! $user || $user->role !== 'agent') {
-            return response()->json(['message' => 'Zabranjeno'], 403);
-        }
-
-        $query = Arrangement::with('destination')->where('agent_id', $user->id);
-
-        if ($request->filled('q')) {
-            $q = $request->input('q');
-            $query->where(function ($w) use ($q) {
-                $w->where('name', 'like', "%$q%")
-                  ->orWhereHas('destination', function ($d) use ($q) {
-                      $d->where('name', 'like', "%$q%")
-                        ->orWhere('country', 'like', "%$q%");
-                  });
-            });
-        }
-
-        $perPage = (int) $request->input('per_page', 15);
-        $perPage = $perPage > 0 && $perPage <= 100 ? $perPage : 15;
-        $page = (int) $request->input('page', 1);
-
-        return $query->orderBy('start_date')->paginate($perPage, ['*'], 'page', $page);
-    }
+    
 
     public function search(Request $request)
     {
@@ -227,66 +202,4 @@ class ArrangementController extends Controller
         return response()->json($arrangements);
     }
 
-    public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'destination_id' => 'required|exists:destinations,id',
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'price' => 'required|numeric|min:0',
-            'start_date' => 'required|date',
-            'end_date' => 'required|date|after_or_equal:start_date',
-            'available_spots' => 'required|integer|min:0',
-            'transport_type' => 'required|in:bus,airplane,own',
-            'accommodation_type' => 'required|in:hotel,apartment,villa',
-            'is_active' => 'sometimes|boolean',
-            'image_url' => 'nullable|url',
-        ]);
-
-        $arrangement = Arrangement::create($validated + [
-            'is_last_minute' => false,
-            'is_early_booking' => false,
-            'agent_id' => optional($request->user())->role === 'agent' ? $request->user()->id : null,
-        ]);
-
-        return response()->json($arrangement->load('destination'), 201);
-    }
-
-    public function update(Request $request, Arrangement $arrangement)
-    {
-        $validated = $request->validate([
-            'destination_id' => 'sometimes|exists:destinations,id',
-            'name' => 'sometimes|string|max:255',
-            'description' => 'nullable|string',
-            'price' => 'sometimes|numeric|min:0',
-            'start_date' => 'sometimes|date',
-            'end_date' => 'sometimes|date|after_or_equal:start_date',
-            'available_spots' => 'sometimes|integer|min:0',
-            'transport_type' => 'sometimes|in:bus,airplane,own',
-            'accommodation_type' => 'sometimes|in:hotel,apartment,villa',
-            'is_active' => 'sometimes|boolean',
-            'image_url' => 'nullable|url',
-            'is_last_minute' => 'sometimes|boolean',
-            'is_early_booking' => 'sometimes|boolean',
-        ]);
-
-        $user = $request->user();
-        if ($user && $user->role === 'agent' && $arrangement->agent_id && $arrangement->agent_id !== $user->id) {
-            return response()->json(['message' => 'Zabranjeno: možete menjati samo svoje aranžmane.'], 403);
-        }
-
-        $arrangement->update($validated);
-        return response()->json($arrangement->load('destination'));
-    }
-
-    public function destroy(Arrangement $arrangement)
-    {
-        $user = request()->user();
-        if ($user && $user->role === 'agent' && $arrangement->agent_id && $arrangement->agent_id !== $user->id) {
-            return response()->json(['message' => 'Zabranjeno: možete brisati samo svoje aranžmane.'], 403);
-        }
-
-        $arrangement->delete();
-        return response()->json(['deleted' => true]);
-    }
 }

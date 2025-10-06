@@ -12,15 +12,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('reservations', function (Blueprint $table) {
-            $table->id();
-             $table->foreignId('user_id')->constrained()->onDelete('cascade');
+           $table->id();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('arrangement_id')->constrained()->onDelete('cascade');
             $table->foreignId('offer_id')->nullable()->constrained()->onDelete('set null');
-            $table->enum('status', ['created', 'confirmed', 'cancelled']);
-            $table->integer('number_of_people');
+            $table->enum('status', ['pending', 'paid', 'cancelled'])->default('pending');
+            $table->integer('number_of_persons');
             $table->decimal('total_price', 10, 2);
             $table->decimal('discount_amount', 10, 2)->default(0);
-            $table->text('notes')->nullable();
+    
             $table->timestamps();
         });
     }

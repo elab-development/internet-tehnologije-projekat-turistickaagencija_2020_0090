@@ -2,7 +2,8 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Arrangement;
+use App\Models\Destination;
 use Illuminate\Database\Seeder;
 
 class ArrangementSeeder extends Seeder

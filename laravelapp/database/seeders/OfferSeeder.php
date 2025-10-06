@@ -2,15 +2,17 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Offer;
+use App\Models\Arrangement;
 use Illuminate\Database\Seeder;
 
 class OfferSeeder extends Seeder
 {
     public function run(): void
     {
-        // Brisemo sve postojeće ponude
-        Offer::truncate();
+        // Prvo ćemo obrisati sve postojeće ponude
+        Offer::query()->delete();
+
 
         // Uzimamo sve aktivne aranžmane
         $arrangements = Arrangement::where('is_active', true)->get();
@@ -59,4 +61,4 @@ class OfferSeeder extends Seeder
             }
         }
     }
-}
+} 
