@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Offer extends Model
 {
@@ -10,7 +11,7 @@ class Offer extends Model
         'name',
         'arrangement_id',
         'type',
-        'discount_percentage',
+        'discount',
         'valid_from',
         'valid_until',
         'is_active',
@@ -21,7 +22,7 @@ class Offer extends Model
         'valid_from' => 'datetime',
         'valid_until' => 'datetime',
         'is_active' => 'boolean',
-        'discount_percentage' => 'decimal:2'
+        'discount' => 'decimal:2'
     ];
 
     public function arrangement(): BelongsTo

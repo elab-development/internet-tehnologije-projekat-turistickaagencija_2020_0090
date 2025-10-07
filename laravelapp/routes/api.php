@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use App\Http\Controllers\ArrangementController;
+use App\Http\Controllers\Auth\ApiRegisteredUserController;
 
 Route::prefix('arrangements')->group(function () {
     Route::get('/search', [ArrangementController::class, 'search']);
@@ -17,3 +18,5 @@ Route::prefix('arrangements')->group(function () {
 });
 
 Route::get('/arrangements', [ArrangementController::class, 'index']);
+
+Route::post('register', [ApiRegisteredUserController::class, 'store']);
