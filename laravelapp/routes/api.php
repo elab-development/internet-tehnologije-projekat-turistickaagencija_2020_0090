@@ -6,6 +6,7 @@ use App\Http\Controllers\ArrangementController;
 use App\Http\Controllers\Auth\ApiRegisteredUserController;
 use App\Http\Controllers\Auth\ApiLoginUserController;
 use App\Http\Controllers\Auth\ApiLogoutUserController;
+use App\Http\Middleware\RoleMiddleware;
 
 Route::prefix('arrangements')->group(function () {
     Route::get('/search', [ArrangementController::class, 'search']);
@@ -16,7 +17,13 @@ Route::prefix('arrangements')->group(function () {
     Route::get('/{arrangement}/similar', [ArrangementController::class, 'similar']);
     Route::get('/{arrangement}', [ArrangementController::class, 'show']);
     
-
+   //agent ili admin
+    Route::middleware(['auth:sanctum', RoleMiddleware::class.':agent,admin'])->group(function () {
+        Route::post('/', [ArrangementController::class, 'store']);
+        Route::put('/{arrangement}', [ArrangementController::class, 'update']);
+        Route::delete('/{arrangement}', [ArrangementController::class, 'destroy']);
+        Route::get('/mine/list', [ArrangementController::class, 'mine']);
+    });
 });
 
 Route::get('/arrangements', [ArrangementController::class, 'index']);
