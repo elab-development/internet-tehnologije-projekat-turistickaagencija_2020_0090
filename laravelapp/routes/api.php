@@ -6,10 +6,13 @@ use App\Http\Controllers\ArrangementController;
 use App\Http\Controllers\DestinationController;
 use App\Http\Controllers\OfferController;
 use App\Http\Controllers\ReservationApiController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\UploadController;
 use App\Http\Controllers\Auth\ApiRegisteredUserController;
 use App\Http\Controllers\Auth\ApiLoginUserController;
 use App\Http\Controllers\Auth\ApiLogoutUserController;
 use App\Http\Middleware\RoleMiddleware;
+use App\Http\Middleware\AdminMiddleware;
 
 Route::prefix('arrangements')->group(function () {
     Route::get('/search', [ArrangementController::class, 'search']);
@@ -55,9 +58,32 @@ Route::prefix('offers')->group(function () {
     });
 });
 
+Route::middleware(['auth:sanctum', RoleMiddleware::class.':admin'])->prefix('admin')->group(function () {
+    Route::get('/reservations', function (Request $request) {
+        $reservations = \App\Models\Reservation::with(['user','arrangement.destination'])->latest()->paginate(15);
+        return response()->json($reservations);
+    });
+    Route::get('/users', [AdminController::class, 'users']);
+    Route::post('/users', [AdminController::class, 'createUser']);
+    Route::put('/users/{user}', [AdminController::class, 'updateUser']);
+    Route::delete('/users/{user}', [AdminController::class, 'deleteUser']);
+    Route::get('/activities', [AdminController::class, 'activities']);
+    Route::get('/offers', [OfferController::class, 'adminIndex']);
+});
+
 Route::get('/arrangements', [ArrangementController::class, 'index']);
 
-Route::middleware('auth:sanctum')->post('/reservations', [ReservationApiController::class, 'store']);
+Route::middleware(['auth:sanctum', RoleMiddleware::class.':admin'])->post('/upload', [UploadController::class, 'store']);
+
+//Route::middleware('auth:sanctum')->post('/reservations', [ReservationApiController::class, 'store']);
+
+   Route::middleware(['auth:sanctum',RoleMiddleware::class. ':client'])->group(function () {
+
+    Route::post('/reservations', [ReservationApiController::class, 'store']);
+
+
+
+});
 
 Route::middleware('guest')->group(function () {
 

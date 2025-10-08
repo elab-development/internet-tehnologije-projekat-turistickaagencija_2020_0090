@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
+use App\Mail\ReservationConfirmMail;
 
 class ReservationApiController extends Controller
 {
@@ -54,11 +55,20 @@ class ReservationApiController extends Controller
             $reservation->setRelation('arrangement', $arrangement->fresh(['destination']));
         });
 
-        try {
+        /**try {
             Mail::to($user->email)->send(new ReservationCreated($reservation));
         } catch (\Throwable $e) {
             Log::warning('Slanje email-a nije uspelo: '.$e->getMessage());
+        }*/
+
+        try {
+          Mail::to(auth()->user()->email)->send(new ReservationConfirmMail($reservation));
+        } catch (\Throwable $e) {
+            Log::warning('Slanje email-a nije uspelo: '.$e->getMessage());
         }
+    
+
+        // Mail::to($reservation->user->email)->send(new ReservationConfirmMail($reservation));
 
         return response()->json([
             'message' => 'Rezervacija je uspešno kreirana.',
