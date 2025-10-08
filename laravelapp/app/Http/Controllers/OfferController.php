@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Offer;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
-class OfferControler extends Controller
+class OfferController extends Controller
 {
     public function index(Request $request): JsonResponse
     {
@@ -13,17 +15,9 @@ class OfferControler extends Controller
                 'params' => $request->all(),
                 'arrangement_id' => $request->arrangement_id
             ]);
-
-            // Maro, ovo je osnovni upit za javni listing aktivnih ponuda.
-            // Zašto: frontend treba samo ponude koje nisu istekle.
-            // Ako zapne: proveri kolonu `valid_until` i timezone.
             $query = Offer::with('arrangement.destination')
                 ->where('is_active', true)
                 ->where('valid_until', '>', now());
-
-            // Maro, ako prosledimo `arrangement_id`, filtriramo ponude za taj aranžman.
-            // Zašto: admin panel može da gleda popuste po aranžmanu.
-            // Ako zapne: proveri da li ID postoji u bazi.
             if ($request->has('arrangement_id')) {
                 $query->where('arrangement_id', $request->arrangement_id);
             }

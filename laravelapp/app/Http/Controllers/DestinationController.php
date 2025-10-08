@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Destination;
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 
 class DestinationController extends Controller
 {
@@ -21,11 +23,6 @@ class DestinationController extends Controller
         return response()->json($query->orderBy('name')->paginate($perPage));
     }
 
-    public function create()
-    {
-        return view('destinations.create');
-    }
-
     public function store(Request $request): JsonResponse
     {
         $validated = $request->validate([
@@ -42,11 +39,6 @@ class DestinationController extends Controller
     public function show(Destination $destination): JsonResponse
     {
         return response()->json($destination->load('arrangements'));
-    }
-
-    public function edit(Destination $destination)
-    {
-        return view('destinations.edit', compact('destination'));
     }
 
     public function update(Request $request, Destination $destination): JsonResponse
