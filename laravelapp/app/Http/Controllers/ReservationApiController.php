@@ -62,7 +62,7 @@ class ReservationApiController extends Controller
         }*/
 
         try {
-          Mail::to(auth()->user()->email)->send(new ReservationConfirmMail($reservation));
+         Mail::to($user->email)->send(new ReservationConfirmMail($reservation));
         } catch (\Throwable $e) {
             Log::warning('Slanje email-a nije uspelo: '.$e->getMessage());
         }

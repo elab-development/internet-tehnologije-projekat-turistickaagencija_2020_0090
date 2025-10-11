@@ -75,14 +75,8 @@ Route::get('/arrangements', [ArrangementController::class, 'index']);
 
 Route::middleware(['auth:sanctum', RoleMiddleware::class.':admin'])->post('/upload', [UploadController::class, 'store']);
 
-//Route::middleware('auth:sanctum')->post('/reservations', [ReservationApiController::class, 'store']);
-
-   Route::middleware(['auth:sanctum',RoleMiddleware::class. ':client'])->group(function () {
-
+Route::middleware(['auth:sanctum', 'role:client'])->group(function () {
     Route::post('/reservations', [ReservationApiController::class, 'store']);
-
-
-
 });
 
 Route::middleware('guest')->group(function () {
