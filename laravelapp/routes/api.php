@@ -87,6 +87,16 @@ Route::middleware('guest')->group(function () {
 
 });
 
+Route::middleware('auth:sanctum')->get('/me', function (Request $request) {
+    return response()->json([
+        'id' => $request->user()->id,
+        'name' => $request->user()->name,
+        'email' => $request->user()->email,
+        'role' => $request->user()->role,
+    ]);
+});
+
+
 Route::middleware('auth:sanctum')->post('/logout', function (Request $request) {
     $request->user()->currentAccessToken()?->delete();
     return response()->json(['message' => 'Odjavljeno']);
