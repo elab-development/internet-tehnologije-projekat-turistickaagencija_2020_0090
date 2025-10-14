@@ -37,18 +37,6 @@ const Header = () => {
                             >
                                 Aranžmani
                             </Link>
-                            <Link
-                                to="/last-minute"
-                                className={`${isActive('/last-minute') ? 'text-blue-600 font-medium' : 'text-gray-600 hover:text-gray-900'}`}
-                            >
-                                Last Minute
-                            </Link>
-                            <Link
-                                to="/early-booking"
-                                className={`${isActive('/early-booking') ? 'text-blue-600 font-medium' : 'text-gray-600 hover:text-gray-900'}`}
-                            >
-                                Early Booking
-                            </Link>
 
                             {/* 🔹 Ovdje ide uslovni prikaz */}
                             {status === 'authenticated' ? (
@@ -114,20 +102,6 @@ const Header = () => {
                                 onClick={() => setIsMenuOpen(false)}
                             >
                                 Aranžmani
-                            </Link>
-                            <Link
-                                to="/last-minute"
-                                className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50"
-                                onClick={() => setIsMenuOpen(false)}
-                            >
-                                Last Minute
-                            </Link>
-                            <Link
-                                to="/early-booking"
-                                className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50"
-                                onClick={() => setIsMenuOpen(false)}
-                            >
-                                Early Booking
                             </Link>
 
                             {/* 🔹 Uslovno i u mobilnom meniju */}

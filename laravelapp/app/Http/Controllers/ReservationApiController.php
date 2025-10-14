@@ -55,20 +55,11 @@ class ReservationApiController extends Controller
             $reservation->setRelation('arrangement', $arrangement->fresh(['destination']));
         });
 
-        /**try {
-            Mail::to($user->email)->send(new ReservationCreated($reservation));
-        } catch (\Throwable $e) {
-            Log::warning('Slanje email-a nije uspelo: '.$e->getMessage());
-        }*/
-
         try {
          Mail::to($user->email)->send(new ReservationConfirmMail($reservation));
         } catch (\Throwable $e) {
             Log::warning('Slanje email-a nije uspelo: '.$e->getMessage());
         }
-    
-
-        // Mail::to($reservation->user->email)->send(new ReservationConfirmMail($reservation));
 
         return response()->json([
             'message' => 'Rezervacija je uspešno kreirana.',

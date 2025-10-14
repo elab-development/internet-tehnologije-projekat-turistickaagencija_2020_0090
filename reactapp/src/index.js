@@ -13,10 +13,10 @@ import Register from './Register';
 import AdminDashboard from './AdminDashboard';
 import DashboardLanding from './DashboardLanding';
 import AdminDestinationEdit from './admin/AdminDestinationEdit';
-import AdminOfferEdit from './admin/AdminOfferEdit';
 import AdminArrangementEdit from './admin/AdminArrangementEdit';
 import AdminDestinationCreate from './admin/AdminDestinationCreate';
 import AdminArrangementCreate from './admin/AdminArrangementCreate';
+import AgentDashboard from './AgentDashboard';
 import RequireAuth from './RequireAuth';
 /**import Home from './components/Home';
 import LastMinute from './components/LastMinute';
@@ -27,7 +27,6 @@ import AgentDashboard from './components/AgentDashboard';
 import ClientDashboard from './components/ClientDashboard';
 import DashboardLanding from './components/DashboardLanding';
 import AdminDestinationEdit from './components/admin/AdminDestinationEdit';
-import AdminOfferEdit from './components/admin/AdminOfferEdit';
 import AdminArrangementEdit from './components/admin/AdminArrangementEdit';
 import AdminDestinationCreate from './components/admin/AdminDestinationCreate';
 import AdminArrangementCreate from './components/admin/AdminArrangementCreate';
@@ -56,8 +55,8 @@ const App = () => {
                             <Route path="/admin/destinations/create" element={<RequireAuth allowedRoles={['admin']}><AdminDestinationCreate /></RequireAuth>} />
                             <Route path="/admin/arrangements/create" element={<RequireAuth allowedRoles={['admin']}><AdminArrangementCreate /></RequireAuth>} />
                             <Route path="/admin/destinations/:id/edit" element={<RequireAuth allowedRoles={['admin']}><AdminDestinationEdit /></RequireAuth>} />
-                            <Route path="/admin/offers/:id/edit" element={<RequireAuth allowedRoles={['admin']}><AdminOfferEdit /></RequireAuth>} />
                             <Route path="/admin/arrangements/:id/edit" element={<RequireAuth allowedRoles={['admin']}><AdminArrangementEdit /></RequireAuth>} />
+                            <Route path="/dashboard/agent" element={<RequireAuth allowedRoles={['agent']}><AgentDashboard /></RequireAuth>} />
                         </Routes>
                     
                 </Layout>

@@ -15,7 +15,6 @@ return new class extends Migration
            $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('arrangement_id')->constrained()->onDelete('cascade');
-            $table->foreignId('offer_id')->nullable()->constrained()->onDelete('set null');
             $table->enum('status', ['pending', 'paid', 'cancelled'])->default('pending');
             $table->integer('number_of_persons');
             $table->decimal('total_price', 10, 2);

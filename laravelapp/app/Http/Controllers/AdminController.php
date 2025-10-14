@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use App\Models\UserActivity;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
@@ -31,27 +30,6 @@ class AdminController extends Controller
         return response()->json($users);
     }
 
-    
-    public function activities(Request $request): JsonResponse
-    {
-        $userId = $request->query('user_id');
-        $type = $request->query('type');
-        $q = $request->query('q');
-
-        $query = UserActivity::with('user');
-        if ($userId) {
-            $query->where('user_id', $userId);
-        }
-        if ($type) {
-            $query->where('activity_type', $type);
-        }
-        if ($q) {
-            $query->where('activity_data', 'like', "%$q%");
-        }
-
-        $activities = $query->latest()->paginate(20);
-        return response()->json($activities);
-    }
 
     public function createUser(Request $request): JsonResponse
     {

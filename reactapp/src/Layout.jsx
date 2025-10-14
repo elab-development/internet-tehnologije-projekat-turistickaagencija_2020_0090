@@ -23,12 +23,6 @@ const Layout = ({ children }) => {
                                 <Link to="/" className="text-blue-600">
                                     Aranžmani
                                 </Link>
-                                <Link to="/last-minute" className="text-gray-600 hover:text-gray-900">
-                                    Last Minute
-                                </Link>
-                                <Link to="/early-booking" className="text-gray-600 hover:text-gray-900">
-                                    Early Booking
-                                </Link>
                                 <Link to="/search" className="text-gray-600 hover:text-gray-900">
                                     Pretraga
                                 </Link>

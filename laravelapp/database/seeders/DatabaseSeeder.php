@@ -51,8 +51,6 @@ class DatabaseSeeder extends Seeder
                     'transport_type' => $this->getRandomTransport(),
                     'accommodation_type' => $this->getRandomAccommodation(),
                     'is_active' => true,
-                    'is_last_minute' => $this->isLastMinute($startDate),
-                    'is_early_booking' => $this->isEarlyBooking($startDate),
                     'image_url' => $this->getImageUrl($dest->name),
                 ];
 
@@ -68,10 +66,8 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             AdditionalArrangementsSeeder::class,
-            EarlyBookingArrangementsSeeder::class,
         ]);
 
-        $this->call(OfferSeeder::class);
     }
 
     private function getArrangementName($city, $index)
@@ -127,13 +123,4 @@ class DatabaseSeeder extends Seeder
         return $map[$city] ?? 'https://images.unsplash.com/photo-1502920917128-1aa500764bca?q=80&w=1200&auto=format&fit=crop';
     }
 
-    private function isLastMinute(Carbon $startDate): bool
-    {
-        return $startDate->diffInDays(Carbon::now()) <= 14;
-    }
-
-    private function isEarlyBooking(Carbon $startDate): bool
-    {
-        return $startDate->diffInDays(Carbon::now()) >= 90;
-    }
 }

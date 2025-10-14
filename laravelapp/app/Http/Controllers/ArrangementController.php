@@ -126,40 +126,6 @@ class ArrangementController extends Controller
         return $query->paginate(9);
     }
 
-    public function popular(Request $request)
-    {
-        $arrangements = Arrangement::with('destination')
-            ->withCount('reservations')
-            ->orderByDesc('reservations_count')
-            ->orderBy('price')
-            ->paginate(9);
-
-        return response()->json($arrangements);
-    }
-
-    public function statistics()
-    {
-        $byTransport = Arrangement::select('transport_type')
-            ->selectRaw('COUNT(*) as count')
-            ->groupBy('transport_type')
-            ->get();
-
-        $byAccommodation = Arrangement::select('accommodation_type')
-            ->selectRaw('COUNT(*) as count')
-            ->groupBy('accommodation_type')
-            ->get();
-
-        $activeCount = Arrangement::where('is_active', true)->count();
-        $futureCount = Arrangement::whereDate('start_date', '>', now())->count();
-
-        return response()->json([
-            'by_transport' => $byTransport,
-            'by_accommodation' => $byAccommodation,
-            'active' => $activeCount,
-            'upcoming' => $futureCount,
-        ]);
-    }
-
     public function active(Request $request)
     {
         $query = Arrangement::with('destination')
@@ -168,40 +134,6 @@ class ArrangementController extends Controller
             ->orderBy('start_date');
 
         return $query->paginate(9);
-    }
-
-    public function similar(Arrangement $arrangement)
-    {
-        $query = Arrangement::with('destination')
-            ->where('id', '!=', $arrangement->id)
-            ->where(function ($q) use ($arrangement) {
-                $q->where('destination_id', $arrangement->destination_id)
-                  ->orWhere('accommodation_type', $arrangement->accommodation_type)
-                  ->orWhere('transport_type', $arrangement->transport_type);
-            })
-            ->orderBy('start_date');
-
-        return $query->limit(9)->get();
-    }
-
-    public function lastMinute()
-    {
-        $arrangements = Arrangement::where('is_last_minute', true)
-            ->where('is_active', true)
-            ->with('destination')
-            ->paginate(9);
-
-        return response()->json($arrangements);
-    }
-
-    public function earlyBooking()
-    {
-        $arrangements = Arrangement::where('is_early_booking', true)
-            ->where('is_active', true)
-            ->with('destination')
-            ->paginate(9);
-
-        return response()->json($arrangements);
     }
 
      public function store(Request $request)
@@ -220,10 +152,10 @@ class ArrangementController extends Controller
             'image_url' => 'nullable|url',
         ]);
 
+        $user = $request->user();
+
         $arrangement = Arrangement::create($validated + [
-            'is_last_minute' => false,
-            'is_early_booking' => false,
-            'agent_id' => optional($request->user())->role === 'agent' ? $request->user()->id : null,
+            'agent_id' => $user->role === 'agent' ? $user->id : null,
         ]);
 
         return response()->json($arrangement->load('destination'), 201);
@@ -243,8 +175,6 @@ class ArrangementController extends Controller
             'accommodation_type' => 'sometimes|in:hotel,apartment,villa',
             'is_active' => 'sometimes|boolean',
             'image_url' => 'nullable|url',
-            'is_last_minute' => 'sometimes|boolean',
-            'is_early_booking' => 'sometimes|boolean',
         ]);
 
         

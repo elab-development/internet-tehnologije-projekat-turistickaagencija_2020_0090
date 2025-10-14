@@ -19,9 +19,6 @@ return new class extends Migration
             $table->decimal('original_price', 10, 2)->nullable();
             $table->decimal('discount_percentage', 5, 2)->nullable();
             $table->boolean('is_active')->default(true);
-            $table->boolean('is_last_minute')->default(false);
-            $table->boolean('is_early_booking')->default(false);
-            $table->timestamp('special_offer_expires_at')->nullable();
             $table->string('transport_type')->nullable();
             $table->string('accommodation_type')->nullable();
             $table->string('image_url')->nullable();

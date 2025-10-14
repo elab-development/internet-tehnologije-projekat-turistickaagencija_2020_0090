@@ -21,10 +21,8 @@ class Arrangement extends Model
         'transport_type',
         'accommodation_type',
         'is_active',
-        'is_last_minute',
-        'is_early_booking',
-        'special_offer_expires_at',
         'image_url',
+        'agent_id'
     ];
 
     protected $casts = [
@@ -32,7 +30,6 @@ class Arrangement extends Model
         'end_date' => 'date',
         'is_active' => 'boolean',
         'price' => 'decimal:2',
-        'is_last_minute' => 'boolean',
     ];
 
     public function destination(): BelongsTo

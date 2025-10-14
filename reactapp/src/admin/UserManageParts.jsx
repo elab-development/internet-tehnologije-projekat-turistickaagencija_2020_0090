@@ -75,7 +75,7 @@ export const ResetPassBtn = ({ user, onChanged }) => {
 
 export const DeleteUserBtn = ({ user, onChanged }) => {
   const del = async () => {
-    if (!confirm('Obrisati korisnika?')) return;
+    if (!window.confirm('Obrisati korisnika?')) return;
     const token = localStorage.getItem('api_token');
     await axios.delete(`http://localhost:8000/api/admin/users/${user.id}`, { headers: { Authorization: `Bearer ${token}` } });
     onChanged && onChanged();

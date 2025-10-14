@@ -26,25 +26,18 @@ const LoadingSpinner = () => (
 const ArrangementCard = () => {
     const { id } = useParams();
     const [arrangement, setArrangement] = useState(null);
-    const [offers, setOffers] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                console.log('Fetching arrangement and offers for ID:', id);
-                
-                const [arrangementResponse, offersResponse] = await Promise.all([
+                const [arrangementResponse] = await Promise.all([
                     axios.get(`http://localhost:8000/api/arrangements/${id}`),
-                    axios.get(`http://localhost:8000/api/offers?arrangement_id=${id}`)
                 ]);
 
                 console.log('Arrangement response:', arrangementResponse.data);
-                console.log('Offers response:', offersResponse.data);
-
                 setArrangement(arrangementResponse.data);
-                setOffers(offersResponse.data.data || []);
                 setLoading(false);
             } catch (err) {
                 console.error('Error fetching data:', err);
@@ -76,10 +69,6 @@ const ArrangementCard = () => {
 
     const duration = Math.ceil((new Date(arrangement.end_date) - new Date(arrangement.start_date)) / (1000 * 60 * 60 * 24));
 
-    const activeOffer = offers.find(offer => 
-        offer.is_active && new Date(offer.valid_until) > new Date()
-    );
-
     return (
         <div className="max-w-4xl mx-auto">
             <div className="mb-6 flex justify-between items-center">
@@ -93,27 +82,6 @@ const ArrangementCard = () => {
                     ID aranžmana: {arrangement.id}
                 </span>
             </div>
-            
-            {activeOffer && (
-                <div className="mb-6 bg-red-50 border border-red-200 rounded-lg p-4">
-                    <div className="flex items-center justify-between">
-                        <div>
-                            <h3 className="text-lg font-semibold text-red-600">
-                                {activeOffer.type === 'last_minute' ? 'Last Minute Ponuda!' : 'Early Booking Popust!'}
-                            </h3>
-                            <p className="text-red-600">{activeOffer.description}</p>
-                        </div>
-                        <div className="text-right">
-                            <p className="text-2xl font-bold text-red-600">
-                                -{activeOffer.discount_percentage}%
-                            </p>
-                            <p className="text-sm text-red-500">
-                                Važi do: {formatDate(activeOffer.valid_until)}
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            )}
 
             <div className="bg-white rounded-lg shadow-lg overflow-hidden">
                 <div className="p-6">
@@ -163,33 +131,23 @@ const ArrangementCard = () => {
                         <p className="text-gray-600 bg-gray-50 p-4 rounded-lg">{arrangement.description}</p>
                     </div>
 
-                    <div className="mt-6 flex justify-between items-center bg-blue-50 p-4 rounded-lg">
-                        <div>
-                            {activeOffer ? (
-                                <>
-                                    <p className="text-gray-500 line-through">
-                                        {formatPrice(arrangement.price)}
-                                    </p>
-                                    <p className="text-2xl font-bold text-blue-600">
-                                        {formatPrice(arrangement.price * (1 - activeOffer.discount_percentage / 100))}
-                                    </p>
-                                </>
-                            ) : (
-                                <p className="text-2xl font-bold text-blue-600">
-                                    {formatPrice(arrangement.price)}
-                                </p>
-                            )}
-                            <p className="text-gray-500">
-                                Slobodnih mesta: <span className="font-medium">{arrangement.available_spots}</span>
-                            </p>
-                        </div>
-                        <button 
-                            className="bg-blue-500 text-white px-8 py-3 rounded-lg hover:bg-blue-600 transition-colors duration-200"
-                            disabled={arrangement.available_spots === 0}
-                        >
-                            {arrangement.available_spots > 0 ? 'Rezerviši' : 'Nema mesta'}
-                        </button>
+                   <div className="mt-6 flex justify-between items-center bg-blue-50 p-4 rounded-lg">
+                    <div>
+                        <p className="text-2xl font-bold text-blue-600">
+                            {formatPrice(arrangement.price)}
+                        </p>
+                        <p className="text-gray-500">
+                            Slobodnih mesta: <span className="font-medium">{arrangement.available_spots}</span>
+                        </p>
                     </div>
+                    <button 
+                        className="bg-blue-500 text-white px-8 py-3 rounded-lg hover:bg-blue-600 transition-colors duration-200"
+                        disabled={arrangement.available_spots === 0}
+                    >
+                        {arrangement.available_spots > 0 ? 'Rezerviši' : 'Nema mesta'}
+                    </button>
+                </div>
+
                 </div>
             </div>
         </div>

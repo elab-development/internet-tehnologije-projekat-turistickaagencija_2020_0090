@@ -13,16 +13,13 @@ const TabBtn = ({ active, onClick, children }) => (
 const useTokenHeader = () => ({ Authorization: `Bearer ${localStorage.getItem('api_token')}` });
 
 const AdminDashboard = () => {
-  const [tab, setTab] = useState('pregled');
+  const [tab, setTab] = useState('rezervacije');
   const [reservations, setReservations] = useState(null);
   const [users, setUsers] = useState(null);
   const [usersFilter, setUsersFilter] = useState({ role: '', q: '' });
-  const [activities, setActivities] = useState(null);
   const [actFilter, setActFilter] = useState({ user_id: '', type: '', q: '' });
   const [destList, setDestList] = useState([]);
   const [destForm, setDestForm] = useState({ name: '', country: '', description: '', image_url: '' });
-  const [offerList, setOfferList] = useState([]);
-  const [offerForm, setOfferForm] = useState({ name: '', arrangement_id: '', type: 'last_minute', discount_percentage: 10, valid_from: '', valid_until: '', is_active: true, description: '' });
   const [arrList, setArrList] = useState([]);
   const [arrQ, setArrQ] = useState('');
   const [arrPage, setArrPage] = useState(1);
@@ -52,23 +49,9 @@ const AdminDashboard = () => {
     setUsers(res.data);
   };
 
-  const loadActivities = async () => {
-    const params = new URLSearchParams();
-    if (actFilter.user_id) params.set('user_id', actFilter.user_id);
-    if (actFilter.type) params.set('type', actFilter.type);
-    if (actFilter.q) params.set('q', actFilter.q);
-    const res = await axios.get(`http://localhost:8000/api/admin/activities?${params.toString()}`, { headers: tokenHeader });
-    setActivities(res.data);
-  };
-
   const loadDestinations = async () => {
     const res = await axios.get('http://localhost:8000/api/destinations?per_page=100');
     setDestList(res.data?.data || []);
-  };
-
-  const loadOffers = async () => {
-    const res = await axios.get('http://localhost:8000/api/admin/offers', { headers: tokenHeader });
-    setOfferList(res.data?.data || []);
   };
 
   const loadArrangements = async () => {
@@ -88,9 +71,7 @@ const AdminDashboard = () => {
     (async () => {
       try {
         if (tab === 'korisnici') await loadUsers();
-        if (tab === 'aktivnosti') await loadActivities();
         if (tab === 'destinacije') await loadDestinations();
-        if (tab === 'ponude') await loadOffers();
         if (tab === 'aranzmani') await loadArrangements();
       } catch (_) {}
     })();
@@ -115,28 +96,8 @@ const AdminDashboard = () => {
     try { await axios.put(`http://localhost:8000/api/destinations/${id}`, patch, { headers: tokenHeader }); await loadDestinations(); setMsg('Izmenjeno.'); } catch (_) { setMsg('Greška pri izmeni.'); }
   };
   const deleteDestination = async (id) => {
-    if (!confirm('Obrisati destinaciju?')) return; setMsg('');
+    if (!window.confirm('Obrisati destinaciju?')) return; setMsg('');
     try { await axios.delete(`http://localhost:8000/api/destinations/${id}`, { headers: tokenHeader }); await loadDestinations(); setMsg('Obrisano.'); } catch (_) { setMsg('Greška pri brisanju.'); }
-  };
-
-  // Maro, ovde održavamo specijalne ponude (last minute/early booking).
-  // Zašto: samo admin sme da odobri ili povuče popuste, pa sve radimo iz jednog mesta.
-  // Ako zapne: proveri da li `discount_percentage` ide kao broj i da li `is_active` stiže kao boolean ka backendu.
-  const createOffer = async (e) => {
-    e.preventDefault(); setMsg('');
-    try {
-      await axios.post('http://localhost:8000/api/offers', { ...offerForm, discount_percentage: Number(offerForm.discount_percentage) }, { headers: tokenHeader });
-      setOfferForm({ name: '', arrangement_id: '', type: 'last_minute', discount_percentage: 10, valid_from: '', valid_until: '', is_active: true, description: '' });
-      await loadOffers(); setMsg('Ponuda sačuvana.');
-    } catch (_) { setMsg('Greška pri čuvanju ponude.'); }
-  };
-  const updateOffer = async (id, patch) => {
-    setMsg('');
-    try { await axios.put(`http://localhost:8000/api/offers/${id}`, patch, { headers: tokenHeader }); await loadOffers(); setMsg('Izmenjeno.'); } catch (_) { setMsg('Greška pri izmeni ponude.'); }
-  };
-  const deleteOffer = async (id) => {
-    if (!confirm('Obrisati ponudu?')) return; setMsg('');
-    try { await axios.delete(`http://localhost:8000/api/offers/${id}`, { headers: tokenHeader }); await loadOffers(); setMsg('Obrisano.'); } catch (_) { setMsg('Greška pri brisanju ponude.'); }
   };
 
   // Maro, ovaj deo služi za brzo ažuriranje i brisanje aranžmana iz admin pogleda.
@@ -147,7 +108,7 @@ const AdminDashboard = () => {
     try { await axios.put(`http://localhost:8000/api/arrangements/${id}`, patch, { headers: tokenHeader }); await loadArrangements(); setMsg('Sačuvano.'); } catch (_) { setMsg('Greška pri čuvanju.'); }
   };
   const deleteArrangement = async (id) => {
-    if (!confirm('Obrisati aranžman?')) return;
+    if (!window.confirm('Obrisati aranžman?')) return;
     setMsg('');
     try { await axios.delete(`http://localhost:8000/api/arrangements/${id}`, { headers: tokenHeader }); await loadArrangements(); setMsg('Obrisano.'); } catch (_) { setMsg('Greška pri brisanju.'); }
   };
@@ -155,32 +116,16 @@ const AdminDashboard = () => {
   return (
     <div className="space-y-6">
       <div className="flex gap-2">
-        <TabBtn active={tab==='pregled'} onClick={()=>setTab('pregled')}>Pregled</TabBtn>
+        <TabBtn active={tab==='rezervacije'} onClick={()=>setTab('rezervacije')}>Rezervacije</TabBtn>
         <TabBtn active={tab==='korisnici'} onClick={()=>setTab('korisnici')}>Korisnici</TabBtn>
-        <TabBtn active={tab==='aktivnosti'} onClick={()=>setTab('aktivnosti')}>Aktivnosti</TabBtn>
         <TabBtn active={tab==='destinacije'} onClick={()=>setTab('destinacije')}>Destinacije</TabBtn>
-        <TabBtn active={tab==='ponude'} onClick={()=>setTab('ponude')}>Ponude</TabBtn>
         <TabBtn active={tab==='aranzmani'} onClick={()=>setTab('aranzmani')}>Aranžmani</TabBtn>
       </div>
 
       {msg && <div className="text-sm">{msg}</div>}
 
-      {tab==='pregled' && (
+      {tab==='rezervacije' && (
         <div className="space-y-6">
-          <div className="bg-white p-4 rounded shadow">
-            <h2 className="text-xl font-semibold mb-2">Statistika</h2>
-            <p className="text-gray-600">Pogledaj grafike na početnoj (Charts) ili koristi API /api/arrangements/statistics.</p>
-          </div>
-          <div className="bg-white p-4 rounded shadow">
-            <h2 className="text-xl font-semibold mb-2">Eksport</h2>
-            <ul className="list-disc ml-6 text-blue-600">
-              <li><a href="/api/export/arrangements.csv" target="_blank" rel="noreferrer">Aranžmani CSV</a></li>
-              <li><a href="/api/export/reservations.csv" target="_blank" rel="noreferrer">Rezervacije CSV</a></li>
-              <li><a href="/api/export/arrangements.pdf" target="_blank" rel="noreferrer">Aranžmani PDF</a></li>
-              <li><a href="/api/export/reservations.pdf" target="_blank" rel="noreferrer">Rezervacije PDF</a></li>
-            </ul>
-            <p className="text-xs text-gray-500 mt-2">Potrebno je biti prijavljen (token) i imati ulogu admin.</p>
-          </div>
           <div className="bg-white p-4 rounded shadow">
             <h2 className="text-xl font-semibold mb-2">Sve rezervacije</h2>
             <div className="space-y-3">
@@ -240,42 +185,6 @@ const AdminDashboard = () => {
         </div>
       )}
 
-      {tab==='aktivnosti' && (
-        <div className="bg-white p-4 rounded shadow space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-2 items-end">
-            <div>
-              <label className="block text-sm">User ID</label>
-              <input className="border rounded px-2 py-1" value={actFilter.user_id} onChange={e=>setActFilter({...actFilter, user_id: e.target.value})} />
-            </div>
-            <div>
-              <label className="block text-sm">Tip</label>
-              <input className="border rounded px-2 py-1" value={actFilter.type} onChange={e=>setActFilter({...actFilter, type: e.target.value})} placeholder="npr. login, search" />
-            </div>
-            <div>
-              <label className="block text-sm">Pretraga</label>
-              <input className="border rounded px-2 py-1" value={actFilter.q} onChange={e=>setActFilter({...actFilter, q: e.target.value})} />
-            </div>
-            <button className="px-3 py-2 bg-blue-600 text-white rounded" onClick={loadActivities}>Primeni</button>
-          </div>
-          <div className="overflow-auto">
-            <table className="min-w-full text-sm">
-              <thead><tr className="text-left"><th className="p-2">ID</th><th className="p-2">Korisnik</th><th className="p-2">Tip</th><th className="p-2">IP</th><th className="p-2">Podaci</th></tr></thead>
-              <tbody>
-                {(activities?.data || []).map(a => (
-                  <tr key={a.id} className="border-t">
-                    <td className="p-2">{a.id}</td>
-                    <td className="p-2">{a.user?.email}</td>
-                    <td className="p-2">{a.activity_type}</td>
-                    <td className="p-2">{a.ip_address}</td>
-                    <td className="p-2 truncate max-w-[320px]">{JSON.stringify(a.activity_data)}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      )}
-
       {tab==='destinacije' && (
         <div className="space-y-4">
           <div className="bg-white p-4 rounded shadow">
@@ -307,51 +216,6 @@ const AdminDashboard = () => {
             <div className="mt-3">
               <Link to="/admin/destinations/create" className="px-3 py-2 bg-blue-600 text-white rounded inline-block">Nova destinacija</Link>
             </div>
-          </div>
-        </div>
-      )}
-
-      {tab==='ponude' && (
-        <div className="space-y-4">
-          <div className="bg-white p-4 rounded shadow">
-            <h2 className="text-lg font-semibold mb-2">Nova ponuda</h2>
-            <form onSubmit={createOffer} className="grid grid-cols-1 md:grid-cols-3 gap-3">
-              <input className="border rounded px-2 py-1" placeholder="Naziv" value={offerForm.name} onChange={e=>setOfferForm({...offerForm, name: e.target.value})} required />
-              <input className="border rounded px-2 py-1" placeholder="Aranžman ID" value={offerForm.arrangement_id} onChange={e=>setOfferForm({...offerForm, arrangement_id: e.target.value})} required />
-              <select className="border rounded px-2 py-1" value={offerForm.type} onChange={e=>setOfferForm({...offerForm, type: e.target.value})}>
-                <option value="last_minute">Last minute</option>
-                <option value="early_booking">Early booking</option>
-              </select>
-              <input type="number" step="0.01" className="border rounded px-2 py-1" placeholder="% Popust" value={offerForm.discount_percentage} onChange={e=>setOfferForm({...offerForm, discount_percentage: e.target.value})} />
-              <input type="date" className="border rounded px-2 py-1" value={offerForm.valid_from} onChange={e=>setOfferForm({...offerForm, valid_from: e.target.value})} required />
-              <input type="date" className="border rounded px-2 py-1" value={offerForm.valid_until} onChange={e=>setOfferForm({...offerForm, valid_until: e.target.value})} required />
-              <label className="inline-flex items-center gap-2">
-                <input type="checkbox" checked={offerForm.is_active} onChange={e=>setOfferForm({...offerForm, is_active: e.target.checked})} /> Aktivna
-              </label>
-              <input className="border rounded px-2 py-1 md:col-span-3" placeholder="Opis" value={offerForm.description} onChange={e=>setOfferForm({...offerForm, description: e.target.value})} />
-              <div className="md:col-span-3"><button className="px-4 py-2 bg-blue-600 text-white rounded">Sačuvaj</button></div>
-            </form>
-          </div>
-          <div className="bg-white p-4 rounded shadow overflow-auto">
-            <table className="min-w-full text-sm">
-              <thead><tr className="text-left"><th className="p-2">Naziv</th><th className="p-2">Tip</th><th className="p-2">Popust</th><th className="p-2">Važi</th><th className="p-2">Aktivna</th><th className="p-2">Akcije</th></tr></thead>
-              <tbody>
-                {offerList.map(o => (
-                  <tr key={o.id} className="border-t">
-                    <td className="p-2">{o.name}</td>
-                    <td className="p-2">{o.type}</td>
-                    <td className="p-2">{o.discount_percentage}%</td>
-                    <td className="p-2">{o.valid_from?.slice(0,10)} → {o.valid_until?.slice(0,10)}</td>
-                    <td className="p-2">{o.is_active ? 'da' : 'ne'}</td>
-                    <td className="p-2 space-x-2">
-                      <button className="px-3 py-1 bg-gray-200 rounded" onClick={()=>updateOffer(o.id, { is_active: !o.is_active })}>{o.is_active?'Deaktiviraj':'Aktiviraj'}</button>
-                      <Link to={`/admin/offers/${o.id}/edit`}><button className="px-3 py-1 bg-gray-200 rounded">Izmeni</button></Link>
-                      <button className="px-3 py-1 bg-red-600 text-white rounded" onClick={()=>deleteOffer(o.id)}>Obriši</button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
           </div>
         </div>
       )}

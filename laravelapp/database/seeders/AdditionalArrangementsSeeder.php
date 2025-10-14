@@ -20,12 +20,9 @@ class AdditionalArrangementsSeeder extends Seeder
                 'transport_type' => 'bus',
                 'accommodation_type' => 'hotel',
                 'is_active' => true,
-                'is_last_minute' => true,
-                'is_early_booking' => false,
                 'start_date' => now()->addDays(5),
                 'end_date' => now()->addDays(12),
                 'available_spots' => 5,
-                'special_offer_expires_at' => now()->addDays(2),
                 'image_url' => 'https://example.com/greece.jpg'
             ],
             [
@@ -38,12 +35,9 @@ class AdditionalArrangementsSeeder extends Seeder
                 'transport_type' => 'airplane',
                 'accommodation_type' => 'hotel',
                 'is_active' => true,
-                'is_last_minute' => false,
-                'is_early_booking' => true,
                 'start_date' => now()->addDays(90),
                 'end_date' => now()->addDays(97),
                 'available_spots' => 20,
-                'special_offer_expires_at' => now()->addDays(30),
                 'image_url' => 'https://example.com/italy.jpg'
             ]
         ];

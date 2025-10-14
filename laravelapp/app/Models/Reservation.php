@@ -10,7 +10,6 @@ class Reservation extends Model
     protected $fillable = [
        'user_id',
         'arrangement_id',
-        'offer_id',
         'status',
         'number_of_persons',
         'total_price',
@@ -39,8 +38,4 @@ class Reservation extends Model
         return $this->belongsTo(Arrangement::class);
     }
 
-    public function offer(): BelongsTo
-    {
-        return $this->belongsTo(Offer::class);
-    }
 }
