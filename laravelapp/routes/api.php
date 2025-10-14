@@ -16,11 +16,11 @@ use App\Http\Middleware\AdminMiddleware;
 
 Route::prefix('arrangements')->group(function () {
     Route::get('/search', [ArrangementController::class, 'search']);
-    Route::get('/last-minute', [ArrangementController::class, 'lastMinute']);
-    Route::get('/popular', [ArrangementController::class, 'popular']);
-    Route::get('/statistics', [ArrangementController::class, 'statistics']);
+    // Route::get('/last-minute', [ArrangementController::class, 'lastMinute']);
+    // Route::get('/popular', [ArrangementController::class, 'popular']);
+    // Route::get('/statistics', [ArrangementController::class, 'statistics']);
     Route::get('/active', [ArrangementController::class, 'active']);
-    Route::get('/{arrangement}/similar', [ArrangementController::class, 'similar']);
+    // Route::get('/{arrangement}/similar', [ArrangementController::class, 'similar']);
     Route::get('/{arrangement}', [ArrangementController::class, 'show']);
     
    //agent ili admin
@@ -46,8 +46,8 @@ Route::middleware(['auth:sanctum', RoleMiddleware::class.':agent,admin'])->group
 
 Route::prefix('offers')->group(function () {
     Route::get('/', [OfferController::class, 'index']);
-    Route::get('/last-minute', [OfferController::class, 'lastMinute']);
-    Route::get('/early-booking', [OfferController::class, 'earlyBooking']);
+    // Route::get('/last-minute', [OfferController::class, 'lastMinute']);
+    // Route::get('/early-booking', [OfferController::class, 'earlyBooking']);
     Route::get('/{offer}', [OfferController::class, 'show']);
 
     // CRUD za ponude (agent/admin)
