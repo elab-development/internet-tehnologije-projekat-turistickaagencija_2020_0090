@@ -1,7 +1,15 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useAuth } from './AuthProvider'; // 🔹 dodano
 
 const Layout = ({ children }) => {
+    const { status, logout } = useAuth(); // 🔹 koristi autentikaciju
+
+    const handleLogout = async () => {
+        await logout();
+        window.location.href = '/'; // možeš i useNavigate, ali ovo je najjednostavnije
+    };
+
     return (
         <div className="min-h-screen bg-gray-100">
             <header className="bg-white shadow-md">
@@ -27,12 +35,28 @@ const Layout = ({ children }) => {
                                 <Link to="/dashboard" className="text-gray-600 hover:text-gray-900">
                                     Dashboard
                                 </Link>
-                                <Link to="/login" className="text-gray-600 hover:text-gray-900">
-                                    Prijava
-                                </Link>
-                                <Link to="/register" className="text-gray-600 hover:text-gray-900">
-                                    Registracija
-                                </Link>
+                                
+
+                                {/* 🔹 Uslovno prikazivanje */}
+                                {status === 'authenticated' ? (
+                                    <button
+                                        onClick={handleLogout}
+                                        className="text-gray-600 hover:text-red-600 transition-colors"
+                                    >
+                                        Odjava
+                                    </button>
+
+                                    
+                                ) : (
+                                    <>
+                                        <Link to="/login" className="text-gray-600 hover:text-gray-900">
+                                            Prijava
+                                        </Link>
+                                        <Link to="/register" className="text-gray-600 hover:text-gray-900">
+                                            Registracija
+                                        </Link>
+                                    </>
+                                )}
                             </nav>
                         </div>
                     </div>

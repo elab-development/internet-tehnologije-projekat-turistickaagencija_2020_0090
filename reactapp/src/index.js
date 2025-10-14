@@ -10,6 +10,14 @@ import ArrangementDetails from './ArrangementDetails';
 import { AuthProvider } from './AuthProvider';
 import Login from './Login';
 import Register from './Register';
+import AdminDashboard from './AdminDashboard';
+import DashboardLanding from './DashboardLanding';
+import AdminDestinationEdit from './admin/AdminDestinationEdit';
+import AdminOfferEdit from './admin/AdminOfferEdit';
+import AdminArrangementEdit from './admin/AdminArrangementEdit';
+import AdminDestinationCreate from './admin/AdminDestinationCreate';
+import AdminArrangementCreate from './admin/AdminArrangementCreate';
+import RequireAuth from './RequireAuth';
 /**import Home from './components/Home';
 import LastMinute from './components/LastMinute';
 import EarlyBooking from './components/EarlyBooking';
@@ -35,17 +43,25 @@ if (existingToken) {
 const App = () => {
     return (
         <Router>
-           
+           <AuthProvider>
                 <Layout>
-                    <AuthProvider>
+                    
                         <Routes>
                             <Route path="/" element={<Home />} />
                             <Route path="/arrangements/:id" element={<ArrangementDetails />} />
                             <Route path="/login" element={<Login />} />
                             <Route path="/register" element={<Register />} />
+                            <Route path="/dashboard" element={<RequireAuth><DashboardLanding /></RequireAuth>} />
+                            <Route path="/dashboard/admin" element={<RequireAuth allowedRoles={['admin']}><AdminDashboard /></RequireAuth>} />
+                            <Route path="/admin/destinations/create" element={<RequireAuth allowedRoles={['admin']}><AdminDestinationCreate /></RequireAuth>} />
+                            <Route path="/admin/arrangements/create" element={<RequireAuth allowedRoles={['admin']}><AdminArrangementCreate /></RequireAuth>} />
+                            <Route path="/admin/destinations/:id/edit" element={<RequireAuth allowedRoles={['admin']}><AdminDestinationEdit /></RequireAuth>} />
+                            <Route path="/admin/offers/:id/edit" element={<RequireAuth allowedRoles={['admin']}><AdminOfferEdit /></RequireAuth>} />
+                            <Route path="/admin/arrangements/:id/edit" element={<RequireAuth allowedRoles={['admin']}><AdminArrangementEdit /></RequireAuth>} />
                         </Routes>
-                    </AuthProvider>
+                    
                 </Layout>
+                </AuthProvider>
         </Router>
     );
 };
