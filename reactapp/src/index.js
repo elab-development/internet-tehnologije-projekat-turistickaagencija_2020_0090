@@ -18,6 +18,7 @@ import AdminDestinationCreate from './admin/AdminDestinationCreate';
 import AdminArrangementCreate from './admin/AdminArrangementCreate';
 import AgentDashboard from './AgentDashboard';
 import RequireAuth from './RequireAuth';
+import Search from './Search';
 /**import Home from './components/Home';
 import LastMinute from './components/LastMinute';
 import EarlyBooking from './components/EarlyBooking';
@@ -57,6 +58,7 @@ const App = () => {
                             <Route path="/admin/destinations/:id/edit" element={<RequireAuth allowedRoles={['admin']}><AdminDestinationEdit /></RequireAuth>} />
                             <Route path="/admin/arrangements/:id/edit" element={<RequireAuth allowedRoles={['admin']}><AdminArrangementEdit /></RequireAuth>} />
                             <Route path="/dashboard/agent" element={<RequireAuth allowedRoles={['agent']}><AgentDashboard /></RequireAuth>} />
+                            <Route path="/search" element={<Search />} />
                         </Routes>
                     
                 </Layout>
