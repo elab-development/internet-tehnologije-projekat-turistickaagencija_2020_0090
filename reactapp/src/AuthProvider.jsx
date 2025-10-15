@@ -80,9 +80,6 @@ export const AuthProvider = ({ children }) => {
         await axios.post('http://localhost:8000/api/logout', {}, { headers: { Authorization: `Bearer ${token}` } });
       }
     } catch (error) {
-      // Maro, ovde ignorišemo grešku odjave.
-      // Zašto: bitno je da očistimo lokalni token i state čak i ako server već smatra da je korisnik odjavljen.
-      // Ako zapne: proveri da li backend ruta `/api/logout` postoji, ali nemoj blokirati čišćenje state-a zbog greške.
     } finally {
       clearAuth();
     }

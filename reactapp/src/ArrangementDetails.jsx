@@ -1,6 +1,3 @@
-// Maro, ovo je detaljna stranica aranžmana sa svim informacijama i mapom.
-// Zašto: korisnik ovde proverava da li mu termini, smeštaj i lokacija odgovaraju.
-// Ako zapne: proveri da li `/api/arrangements/{id}` vraća destinaciju sa koordinatama.
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
@@ -20,9 +17,6 @@ const ArrangementDetails = () => {
     const navigate = useNavigate();
     const { status } = useAuth();
 
-    // Maro, ovim efektom povlačimo aranžman prema ID-u iz rute.
-    // Zašto: moramo sveže podatke kad korisnik otvori detalje.
-    // Ako zapne: potvrdi da `id` postoji u URL-u i da axios GET ne vraća 404.
     useEffect(() => {
         const fetchArrangement = async () => {
             try {

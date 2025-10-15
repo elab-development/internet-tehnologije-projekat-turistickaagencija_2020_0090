@@ -1,6 +1,3 @@
-// Maro, ovo je dashboard za klijenta sa listom njegovih rezervacija.
-// Zašto: korisnik želi brzo da vidi statuse i filtrira svoje prijave.
-// Ako zapne: proveri da li šalješ token u header-u kad gađaš `/api/my/reservations` i da li backend vraća `last_page`.
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 

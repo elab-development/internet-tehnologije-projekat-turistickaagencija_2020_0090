@@ -64,10 +64,6 @@ class DatabaseSeeder extends Seeder
             }
         }
 
-        $this->call([
-            AdditionalArrangementsSeeder::class,
-        ]);
-
     }
 
     private function getArrangementName($city, $index)
@@ -112,15 +108,15 @@ class DatabaseSeeder extends Seeder
     {
         $map = [
             'Pariz' => 'https://images.unsplash.com/photo-1549144511-f099e773c147?q=80&w=1200&auto=format&fit=crop',
-            'Rim' => 'https://images.unsplash.com/photo-1526483360412-f4dbaf036963?q=80&w=1200&auto=format&fit=crop',
+            'Rim' => 'https://images.unsplash.com/photo-1529154036614-a60975f5c760?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1176',
             'Barcelona' => 'https://images.unsplash.com/photo-1464790719320-516ecd75af6c?q=80&w=1200&auto=format&fit=crop',
-            'London' => 'https://images.unsplash.com/photo-1468436139062-f60a71c5c892?q=80&w=1200&auto=format&fit=crop',
+            'London' => 'https://images.unsplash.com/photo-1533929736458-ca588d08c8be?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1170',
             'Amsterdam' => 'https://images.unsplash.com/photo-1436450412740-6b988f486c6b?q=80&w=1200&auto=format&fit=crop',
-            'Beč' => 'https://images.unsplash.com/photo-1594732832278-c9c9ca7608d1?q=80&w=1200&auto=format&fit=crop',
-            'Prag' => 'https://images.unsplash.com/photo-1534683334697-9541c7cb0e76?q=80&w=1200&auto=format&fit=crop',
-            'Atina' => 'https://images.unsplash.com/photo-1548786811-dd6e453ccca0?q=80&w=1200&auto=format&fit=crop',
+            'Beč' => 'https://images.unsplash.com/photo-1573599852326-2d4da0bbe613?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1090',
+            'Prag' => 'https://images.unsplash.com/photo-1600623471616-8c1966c91ff6?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1170',
+            'Atina' => 'https://images.unsplash.com/photo-1555993539-1732b0258235?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1170',
         ];
-        return $map[$city] ?? 'https://images.unsplash.com/photo-1502920917128-1aa500764bca?q=80&w=1200&auto=format&fit=crop';
+        return $map[$city] ?? 'https://plus.unsplash.com/premium_photo-1669018130437-7cf2eb36af1c?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1171';
     }
 
 }

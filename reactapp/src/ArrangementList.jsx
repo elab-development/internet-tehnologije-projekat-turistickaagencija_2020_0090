@@ -19,9 +19,6 @@ const formatDate = (dateString) => {
     });
 };
 
-// Maro, ovaj mini spinner čuvamo da korisnik zna da nešto radimo.
-// Zašto: sprečava osećaj da se stranica zamrzla dok čekamo API.
-// Ako zapne: proveri da li `loading` state prelazi na `false` nakon `axios` poziva.
 const LoadingSpinner = () => (
     <div className="flex justify-center items-center h-40">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>

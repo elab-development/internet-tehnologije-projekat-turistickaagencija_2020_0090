@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { useAuth } from '../AuthProvider'; // 🔹 dodano
+import { useAuth } from '../AuthProvider';
 
 const Header = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const navigate = useNavigate();
     const location = useLocation();
-    const { status, logout } = useAuth(); // 🔹 stanje autentikacije
+    const { status, logout } = useAuth();
     const isActive = (path) => location.pathname === path;
 
     const handleSearch = (e) => {
@@ -19,7 +19,7 @@ const Header = () => {
 
     const handleLogout = async () => {
         await logout();
-        navigate('/'); // 🔹 preusmjeri nakon odjave
+        navigate('/');
     };
 
     return (
@@ -38,7 +38,6 @@ const Header = () => {
                                 Aranžmani
                             </Link>
 
-                            {/* 🔹 Ovdje ide uslovni prikaz */}
                             {status === 'authenticated' ? (
                                 <button
                                     onClick={handleLogout}
@@ -104,7 +103,6 @@ const Header = () => {
                                 Aranžmani
                             </Link>
 
-                            {/* 🔹 Uslovno i u mobilnom meniju */}
                             {status === 'authenticated' ? (
                                 <button
                                     onClick={() => {

@@ -1,6 +1,3 @@
-// Maro, ovo je login forma koja uzima token i odmah te vodi na pravi dashboard.
-// Zašto: bez ovoga ne možeš doći do zaštićenih ruta i exporta.
-// Ako zapne: proveri da li `/api/login` vraća token i da li ga prosleđujemo u Authorization header za `/api/me`.
 import React, { useState } from 'react';
 import axios from 'axios';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
@@ -27,7 +24,6 @@ const Login = () => {
       if (!token) {
         throw new Error('Token nije vraćen.');
       }
-      // Maro, ovde odmah uzimamo ulogu i vodimo na odgovarajući dashboard
       const me = await axios.get('http://localhost:8000/api/me', {
         headers: { Authorization: `Bearer ${token}` },
       });

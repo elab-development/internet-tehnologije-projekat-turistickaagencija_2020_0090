@@ -4,13 +4,16 @@
 import React from 'react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import L from 'leaflet';
-import markerIcon from 'leaflet/dist/images/marker-icon.png';
+import iconMark from './assets/icon-mark.png';
 import markerShadow from 'leaflet/dist/images/marker-shadow.png';
 
-delete L.Icon.Default.prototype._getIconUrl;
-L.Icon.Default.mergeOptions({
-    iconUrl: markerIcon,
-    shadowUrl: markerShadow
+const customIcon = new L.Icon({
+    iconUrl: iconMark,
+    iconSize: [32, 32],
+    iconAnchor: [16, 32],
+    popupAnchor: [0, -32],
+    shadowUrl: markerShadow,
+    shadowSize: [41, 41]
 });
 
 const FALLBACK_CENTER = [45.2671, 19.8335];
@@ -38,6 +41,7 @@ const Map = ({ arrangements, center, zoom = 6 }) => {
                     <Marker
                         key={arrangement.id}
                         position={markerPosition}
+                        icon={customIcon}
                     >
                         <Popup>
                             <div className="p-2">
