@@ -1,6 +1,3 @@
-// Maro, ova lista služi da prikažemo aranžmane u tri režima (standard, last minute, popular).
-// Zašto: centralizujemo logiku prikaza i ne dupliramo komponente.
-// Ako zapne: vidi koji `type` stiže kao prop i da li API rute vraćaju paginirane podatke.
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link, useLocation, useNavigate } from 'react-router-dom';

@@ -73,7 +73,6 @@ class ArrangementController extends Controller
         return response()->json($arrangement);
     }
 
-    
 
     public function search(Request $request)
     {

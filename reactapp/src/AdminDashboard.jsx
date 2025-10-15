@@ -1,6 +1,3 @@
-// Maro, ovo je admin tabla za statistiku, eksport i kompletno upravljanje sistemom.
-// Zašto: kao admin imaš centralno mesto da pregledaš rezervacije, korisnike, ponude i da izvlačiš izveštaje.
-// Ako zapne: uveri se da token nosi ulogu `admin` jer sve rute traže taj nivo pristupa.
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
@@ -29,9 +26,6 @@ const AdminDashboard = () => {
   const tokenHeader = useTokenHeader();
 
   useEffect(() => {
-    // Maro, ovaj useEffect odmah učitava listu rezervacija da admin vidi stanje čim uđe.
-    // Zašto: dashboard bez podataka nije od pomoći i mora da prikaže realno stanje rezervacija.
-    // Ako zapne: proveri odgovor `GET /api/admin/reservations` i da li Authorization header prati token.
     const run = async () => {
       try {
         const res = await axios.get('http://localhost:8000/api/admin/reservations', { headers: tokenHeader });
@@ -64,9 +58,7 @@ const AdminDashboard = () => {
     setArrLastPage(res.data?.last_page || 1);
   };
 
-  // Maro, kada menjaš tabove, tek tada povlačimo relevantne podatke.
-  // Zašto: ne želimo da zagušimo backend svim pozivima ako korisnik gleda samo jedan modul.
-  // Ako zapne: proveri koji tab je aktivan i da li se odgovarajuća `load*` funkcija izvršava bez greške.
+  
   useEffect(() => {
     (async () => {
       try {
@@ -79,9 +71,7 @@ const AdminDashboard = () => {
 
   useEffect(() => { if (tab==='aranzmani') loadArrangements(); }, [arrQ, arrPage]);
 
-  // Maro, ovaj blok obuhvata kreiranje, izmenu i brisanje destinacija.
-  // Zašto: admin mora da ažurira katalog gradova direktno iz dashboarda.
-  // Ako zapne: vidi da li validacija vraća poruku i da li `loadDestinations()` osvežava listu nakon akcije.
+
   const createDestination = async (e) => {
     e.preventDefault(); setMsg('');
     try {
@@ -100,9 +90,7 @@ const AdminDashboard = () => {
     try { await axios.delete(`http://localhost:8000/api/destinations/${id}`, { headers: tokenHeader }); await loadDestinations(); setMsg('Obrisano.'); } catch (_) { setMsg('Greška pri brisanju.'); }
   };
 
-  // Maro, ovaj deo služi za brzo ažuriranje i brisanje aranžmana iz admin pogleda.
-  // Zašto: admin nekad mora da reaguje umesto agenta i ovo je najbrži način.
-  // Ako zapne: potvrdi da `loadArrangements()` trči posle izmene i da rute `/api/arrangements` vraćaju očekivane podatke.
+  
   const quickUpdateArrangement = async (id, patch) => {
     setMsg('');
     try { await axios.put(`http://localhost:8000/api/arrangements/${id}`, patch, { headers: tokenHeader }); await loadArrangements(); setMsg('Sačuvano.'); } catch (_) { setMsg('Greška pri čuvanju.'); }
