@@ -17,12 +17,6 @@ const Home = () => {
     });
     const [filters, setFilters] = useState({
         destination: '',
-        min_price: '',
-        max_price: '',
-        transport_type: '',
-        accommodation_type: '',
-        sort: 'price',
-        sort_direction: 'asc',
         page: 1
     });
     const initialLoadRef = React.useRef(true);
@@ -203,98 +197,6 @@ const Home = () => {
                             onChange={handleFilterChange}
                             onSearch={handleSearch}
                         />
-
-                        <div className="flex items-center space-x-2">
-                            <span className="text-gray-600">Cena:</span>
-                            <input
-                                type="number"
-                                name="min_price"
-                                placeholder="od"
-                                className="w-24 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500"
-                                value={filters.min_price}
-                                onChange={handleFilterChange}
-                                onKeyDown={handleKeyDown}
-                            />
-                            <span>-</span>
-                            <input
-                                type="number"
-                                name="max_price"
-                                placeholder="do"
-                                className="w-24 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500"
-                                value={filters.max_price}
-                                onChange={handleFilterChange}
-                                onKeyDown={handleKeyDown}
-                            />
-                            <span>€</span>
-                        </div>
-
-                        <select
-                            name="transport_type"
-                            className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500"
-                            value={filters.transport_type}
-                            onChange={handleFilterChange}
-                        >
-                            <option value="">Tip prevoza</option>
-                            <option value="bus">Autobus</option>
-                            <option value="airplane">Avion</option>
-                            <option value="own">Sopstveni</option>
-                        </select>
-
-                        <select
-                            name="accommodation_type"
-                            className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500"
-                            value={filters.accommodation_type}
-                            onChange={handleFilterChange}
-                        >
-                            <option value="">Tip smeštaja</option>
-                            <option value="hotel">Hotel</option>
-                            <option value="apartment">Apartman</option>
-                            <option value="villa">Vila</option>
-                        </select>
-
-                        <div className="flex flex-wrap gap-2">
-                            <button
-                                onClick={() => handleSort('price')}
-                                className={`px-3 py-2 rounded-md ${
-                                    filters.sort === 'price'
-                                        ? 'bg-blue-500 text-white'
-                                        : 'bg-gray-100 hover:bg-gray-200'
-                                }`}
-                            >
-                                Cena {filters.sort === 'price' && (filters.sort_direction === 'asc' ? '↑' : '↓')}
-                            </button>
-                            <button
-                                onClick={() => handleSort('start_date')}
-                                className={`px-3 py-2 rounded-md ${
-                                    filters.sort === 'start_date'
-                                        ? 'bg-blue-500 text-white'
-                                        : 'bg-gray-100 hover:bg-gray-200'
-                                }`}
-                            >
-                                Datum {filters.sort === 'start_date' && (filters.sort_direction === 'asc' ? '↑' : '↓')}
-                            </button>
-                            <button
-                                onClick={() => handleSort('end_date')}
-                                className={`px-3 py-2 rounded-md ${
-                                    filters.sort === 'end_date'
-                                        ? 'bg-blue-500 text-white'
-                                        : 'bg-gray-100 hover:bg-gray-200'
-                                }`}
-                            >
-                                Povratak {filters.sort === 'end_date' && (filters.sort_direction === 'asc' ? '↑' : '↓')}
-                            </button>
-                            <button
-                                onClick={() => handleSort('available_spots')}
-                                className={`px-3 py-2 rounded-md ${
-                                    filters.sort === 'available_spots'
-                                        ? 'bg-blue-500 text-white'
-                                        : 'bg-gray-100 hover:bg-gray-200'
-                                }`}
-                            >
-                                Mesta {filters.sort === 'available_spots' && (filters.sort_direction === 'asc' ? '↑' : '↓')}
-                            </button>
-                        </div>
-
                         <button
                             type="submit"
                             className="px-6 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
