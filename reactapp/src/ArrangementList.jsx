@@ -40,16 +40,7 @@ const EmptyState = () => (
     </div>
 );
 
-const getPageTitle = (type) => {
-    switch (type) {
-        case 'last-minute':
-            return 'Last Minute Ponude';
-        case 'popular':
-            return 'Najpopularniji Aranžmani';
-        default:
-            return 'Aktivni Aranžmani';
-    }
-};
+const getPageTitle = (type) => 'Aktivni Aranžmani';
 
 const ArrangementList = ({ type = 'regular' }) => {
     const location = useLocation();
@@ -87,12 +78,7 @@ const ArrangementList = ({ type = 'regular' }) => {
             setError(null);
 
             try {
-                let url = '/api/arrangements/search';
-                if (type === 'last-minute') {
-                    url = '/api/arrangements/last-minute';
-                } else if (type === 'popular') {
-                    url = '/api/arrangements/popular';
-                }
+                let url = 'http://localhost:8000/api/arrangements/search';
 
                 const params = { page: currentPage };
 
@@ -136,13 +122,6 @@ const ArrangementList = ({ type = 'regular' }) => {
             return next;
         });
         setCurrentPage(1);
-    };
-
-    const isLastMinute = (startDate) => {
-        const start = new Date(startDate);
-        const now = new Date();
-        const diffDays = Math.ceil((start - now) / (1000 * 60 * 60 * 24));
-        return diffDays <= 14;
     };
 
     const handleReserveClick = (arrangementId, availableSpots) => {
@@ -192,11 +171,6 @@ const ArrangementList = ({ type = 'regular' }) => {
                             <div key={arrangement.id} 
                                 className="bg-white rounded-lg shadow-md overflow-hidden transition-transform duration-200 hover:scale-105 relative"
                             >
-                                {isLastMinute(arrangement.start_date) && (
-                                    <div className="absolute top-0 right-0 bg-red-500 text-white px-2 py-1 text-sm rounded-bl">
-                                        Last Minute
-                                    </div>
-                                )}
                                 <div className="p-4">
                                     <h2 className="text-xl font-semibold mb-2">{arrangement.name}</h2>
                                     <p className="text-gray-600 mb-2">
