@@ -19,9 +19,7 @@ import AdminArrangementCreate from './admin/AdminArrangementCreate';
 import AgentDashboard from './AgentDashboard';
 import RequireAuth from './RequireAuth';
 import Search from './Search';
-/**
-import ClientDashboard from './components/ClientDashboard';
-*/
+import ClientDashboard from './ClientDashboard';
 
 // Ako postoji token iz prethodne sesije, postavi ga na axios
 const existingToken = localStorage.getItem('api_token');
@@ -47,6 +45,7 @@ const App = () => {
                             <Route path="/admin/destinations/:id/edit" element={<RequireAuth allowedRoles={['admin']}><AdminDestinationEdit /></RequireAuth>} />
                             <Route path="/admin/arrangements/:id/edit" element={<RequireAuth allowedRoles={['admin']}><AdminArrangementEdit /></RequireAuth>} />
                             <Route path="/dashboard/agent" element={<RequireAuth allowedRoles={['agent']}><AgentDashboard /></RequireAuth>} />
+                            <Route path="/dashboard/client" element={<RequireAuth allowedRoles={['client']}><ClientDashboard /></RequireAuth>} />
                             <Route path="/search" element={<Search />} />
                         </Routes>
                     

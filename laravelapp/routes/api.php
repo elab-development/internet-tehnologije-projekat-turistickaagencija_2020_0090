@@ -72,6 +72,27 @@ Route::middleware('auth:sanctum')->get('/me', function (Request $request) {
     ]);
 });
 
+// Moje rezervacije
+Route::middleware('auth:sanctum')->get('/my/reservations', function (Request $request) {
+    $user = $request->user();
+    $q = $request->input('q');
+    $status = $request->input('status');
+    $perPage = (int) $request->input('per_page', 10);
+    $perPage = $perPage > 0 && $perPage <= 100 ? $perPage : 10;
+    $query = $user->reservations()->with(['arrangement.destination']);
+    if ($status) { $query->where('status', $status); }
+    if ($q) {
+        $query->whereHas('arrangement', function ($w) use ($q) {
+            $w->where('name', 'like', "%$q%")
+              ->orWhereHas('destination', function ($d) use ($q) {
+                  $d->where('name', 'like', "%$q%")
+                    ->orWhere('country', 'like', "%$q%");
+              });
+        });
+    }
+    return response()->json($query->latest()->paginate($perPage));
+});
+
 Route::middleware('auth:sanctum')->post('/logout', function (Request $request) {
     $request->user()->currentAccessToken()?->delete();
     return response()->json(['message' => 'Odjavljeno']);
