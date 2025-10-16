@@ -10,7 +10,6 @@ class AdminUserSeeder extends Seeder
 {
     public function run(): void
     {
-        // Kreiramo ili ažuriramo admin korisnika
         $email = env('ADMIN_EMAIL', 'admin@example.com');
         $password = env('ADMIN_PASSWORD', 'password');
 

@@ -15,9 +15,6 @@ const AdminArrangementEdit = () => {
   useEffect(() => {
     const run = async () => {
       try {
-        // Maro, ovde prvo dohvatamo ulogu da znamo na koji dashboard da te vratimo posle izmene.
-        // Zašto: admin i agent se vraćaju na različite stranice pa ne želimo da te bacimo na pogrešan deo aplikacije.
-        // Ako zapne: proveri da li `/api/me` vraća `role` i da li token postoji u `localStorage`.
         try {
           const me = await axios.get('http://localhost:8000/api/me', { headers: tokenHeader });
           if (me?.data?.role) setUserRole(me.data.role);

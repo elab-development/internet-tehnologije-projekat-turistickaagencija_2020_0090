@@ -1,6 +1,3 @@
-// Maro, ova komponenta renderuje paginaciju na osnovu Laravel meta podataka.
-// Zašto: svaki listing (aranžmani, rezervacije) deli isti UX za kretanje kroz strane.
-// Ako zapne: proveri da `meta.links` stižu iz API-ja i da `onPageChange` zapravo menja stanje u roditeljskoj komponenti.
 import React from 'react';
 
 const Pagination = ({ meta, onPageChange }) => {

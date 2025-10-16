@@ -1,13 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { useAuth } from './AuthProvider'; // 🔹 dodano
+import { useAuth } from './AuthProvider'; 
 
 const Layout = ({ children }) => {
-    const { status, logout } = useAuth(); // 🔹 koristi autentikaciju
+    const { status, logout } = useAuth();
 
     const handleLogout = async () => {
         await logout();
-        window.location.href = '/'; // možeš i useNavigate, ali ovo je najjednostavnije
+        window.location.href = '/'; 
     };
 
     return (
@@ -31,7 +31,6 @@ const Layout = ({ children }) => {
                                 </Link>
                                 
 
-                                {/* 🔹 Uslovno prikazivanje */}
                                 {status === 'authenticated' ? (
                                     <button
                                         onClick={handleLogout}

@@ -13,7 +13,7 @@ class AdminController extends Controller
     public function users(Request $request): JsonResponse
     {
         $role = $request->query('role'); 
-        $q = $request->query('q'); // pretraga po imenu/email-u
+        $q = $request->query('q'); 
 
         $query = User::query();
         if ($role) {

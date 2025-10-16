@@ -1,6 +1,3 @@
-// Maro, ovo je Leaflet mapa koja pokazuje destinacije iz aranžmana.
-// Zašto: vizuelno potvrđujemo gde se putuje i koristimo koordinate iz baze.
-// Ako zapne: proveri da li su `latitude` i `longitude` prosleđeni i da li je Leaflet CSS importovan u `app.css`.
 import React from 'react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import L from 'leaflet';

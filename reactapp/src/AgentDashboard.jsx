@@ -1,6 +1,3 @@
-// Maro, ovo je agentov komandni centar za upravljanje aranžmanima.
-// Zašto: sve forme i tabele su na jednom mestu da bi agent radio brzo.
-// Ako zapne: uveri se da token pripada agentu (ili adminu) i da `/api/arrangements/mine/list` vraća tvoje aranžmane.
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 

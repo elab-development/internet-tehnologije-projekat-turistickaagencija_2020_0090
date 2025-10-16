@@ -9,9 +9,6 @@ use App\Models\Arrangement;
 
 class AgentClientUsersSeeder extends Seeder
 {
-    /**
-     * Seeduje nekoliko agent i client korisnika radi demonstracije dashboarda
-     */
     public function run(): void
     {
         $agents = [
@@ -46,8 +43,6 @@ class AgentClientUsersSeeder extends Seeder
                 ]
             );
         }
-
-        // Raspodela postojećih aranžmana agentima (naizmenično)
         $agentIds = User::where('role', 'agent')->pluck('id')->all();
         if (!empty($agentIds)) {
             $i = 0;
