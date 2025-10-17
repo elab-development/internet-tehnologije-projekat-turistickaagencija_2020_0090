@@ -12,7 +12,7 @@ const AdminArrangementCreate = () => {
 
   useEffect(() => {
     const run = async () => {
-      try { const res = await axios.get('http://localhost:8000/api/destinations'); setDestinations(res.data || []); } catch (_) {}
+      try { const res = await axios.get('http://localhost:8000/api/destinations'); setDestinations(res.data.data || []); } catch (_) {}
     };
     run();
   }, []);
